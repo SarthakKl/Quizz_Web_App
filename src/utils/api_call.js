@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-// axios.defaults.baseURL = 'https://opentdb.com/api.php'
+axios.defaults.baseURL = 'https://quizz-backend.herokuapp.com/'
 // const baseUrlToken = 'https://opentdb.com/api_token.php'
 const tokenKey = 'quizzUserToken'
 
@@ -10,7 +10,7 @@ export async function fetchQuestion(category, catIndex, difficulty){
     try{
         const response = await axios({
             method:'get',
-            url:'http://localhost:3002/fetchQuestion',
+            url:'fetchQuestion',
             params:{
                 category:category,
                 index:catIndex,
@@ -29,7 +29,7 @@ export async function performLogin(email, password){
     try{
         const response = await axios({
             method:'post',
-            url:'http://localhost:3002/Login',
+            url:'Login',
             data:{
                 email:email,
                 password:password
@@ -51,7 +51,7 @@ export async function performSignup(email, password){
     try{
         const response = await axios({
             method:'post',
-            url:'http://localhost:3002/Signup',
+            url:'Signup',
             data:{
                 email:email,
                 password:password
@@ -73,7 +73,7 @@ export async function updateSelection(optionSelected, questionId, quizId, hasEnd
     try {
         const response = await axios({
             method:'patch',
-            url:'http://localhost:3002/update-selection',
+            url:'update-selection',
             data:{
                 optionSelected: optionSelected,
                 questionId: questionId,
@@ -90,7 +90,7 @@ export async function updateSelection(optionSelected, questionId, quizId, hasEnd
 export const checkIncompleteQuiz = async () => {
     try {
         const response = await axios({
-            url:'http://localhost:3002/incomplete-quiz-lookup',
+            url:'incomplete-quiz-lookup',
             method:'get'
         })
         return response.data
@@ -103,7 +103,7 @@ export const deleteIncompleteQuiz = async (quizId) => {
     try {
         const response = await axios({
             method:'patch',
-            url:'http://localhost:3002/delete-incomplete-quiz',
+            url:'delete-incomplete-quiz',
             data:{
                 quizId:quizId
             }
