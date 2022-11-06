@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Play from './pages/Play'
 import Result from './pages/Result';
 import SignUp from './pages/SignUp';
+import Verify from './pages/Verify';
 
 function App() {
   // console.log("hehh")
@@ -16,6 +17,7 @@ function App() {
           <Route path = '/Login' element = {<Login/>}/>
           <Route path = '/SignUp' element = {<SignUp/>}/>
           <Route path = '/Result' element = {<Result/>}/>
+          <Route path = '/:id/Login/verify/:token' element = {<Verify/>}/>
         </Routes>
       </BrowserRouter>
     </div>

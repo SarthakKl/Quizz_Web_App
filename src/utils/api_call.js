@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 axios.defaults.baseURL = 'https://quizz-backend.herokuapp.com/'
-// const baseUrlToken = 'https://opentdb.com/api_token.php'
+// const baseUrlToken = 'https://opentdb.com/api_token.phsp'
 const tokenKey = 'quizzUserToken'
 
 export async function fetchQuestion(category, catIndex, difficulty){
@@ -49,6 +49,7 @@ export async function performLogin(email, password){
 
 export async function performSignup(email, password){
     try{
+        console.log("performing signup")
         const response = await axios({
             method:'post',
             url:'Signup',
@@ -57,6 +58,7 @@ export async function performSignup(email, password){
                 password:password
             }
         })
+        console.log(response)
         if(response.data && response.data.token){
             axios.defaults.headers['Authorization'] = response.data.token
             localStorage.setItem(tokenKey, response.data.token)
@@ -112,6 +114,38 @@ export const deleteIncompleteQuiz = async (quizId) => {
     } catch (error) {
         console.log(error)
         return {error}
+    }
+}
+export const verifyUser = async (user_id, token) =>{
+    try {
+        console.log(token)
+        const response = await axios({
+            method:'get',
+            url:'verify',
+            params:{
+                token:token,
+                user_id:user_id
+            }
+        })
+        return response.data
+    } catch (error) {
+        console.log(error)
+        return {error:(error?.response?.data?.message || error.message)}
+    }
+}
+export const resendVerificationMail = async (userId) => {
+    try {
+        const response = await axios({
+            method:'get',
+            url:'reverify',
+            params:{
+                userId:userId
+            }
+        })
+        return response.data
+    } catch (error) {
+        console.log(error)
+        return {error:error?.response.data.message || error.message}
     }
 }
 // export async function getSessionToken(){

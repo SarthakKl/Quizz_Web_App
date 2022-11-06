@@ -151,3 +151,13 @@
     outline: none;
     border: 0.25px;
 }
+.login_title{
+    font-family: "Montserrat-Bold";
+    font-size: 20px;
+}
+.auth_btns{
+    background-color: slateblue;
+}
+.auth_btns:hover{
+    background-color: rgb(136, 122, 226);
+}
