@@ -13,12 +13,12 @@ function Categories({notLogin, category, index, setCatIndex, setCategory, setDif
     setDiff(true)
   }
   return (
-    <li className='px-10' 
+    <div className='px-10 category' 
         onClick={handleClick}
         unselectable = "on"
       >
         {category}
-    </li>
+    </div>
   )
 }
 

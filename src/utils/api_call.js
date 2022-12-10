@@ -1,7 +1,9 @@
 import axios from 'axios'
 
 
-axios.defaults.baseURL = 'https://quizz-backend.herokuapp.com/'
+// axios.defaults.baseURL = 'https://quizz-backend.herokuapp.com/'
+// axios.defaults.baseURL = 'http://localhost:3002/'
+axios.defaults.baseURL = 'https://quizz-webapp-backend.vercel.app/'
 // const baseUrlToken = 'https://opentdb.com/api_token.phsp'
 const tokenKey = 'quizzUserToken'
 

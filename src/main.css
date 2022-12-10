@@ -75,11 +75,12 @@ body{
 .Categories{
     list-style: none;
     display: flex;
+    position:relative;
     flex-wrap: wrap;
     justify-content: center;
-    
+    /* padding: 0px 20px 0px 20px; */
 }
-.Categories li{
+.category{
     width: 200px;
     border: 1px solid black;
     padding: 40px;
@@ -97,7 +98,24 @@ body{
     transition: all 500ms;
 
 }
-.Categories li:hover{
+.play_quiz{
+    /* border: 1px solid gray; */
+    height:50px;
+    width:150px;
+    border-radius:8px;
+    font-family: Montserrat-SemiBold;
+    background-color: rgb(2, 190, 2);
+    box-shadow:2px 2px 2px 2px gray
+}
+.play_quiz:hover{
+    /* border: 1px solid gray; */
+    height:50px;
+    width:150px;
+    border-radius:8px;
+    background-color: rgb(0, 160, 0);
+    box-shadow:2px 2px 2px 2px gray
+}
+.category:hover{
     width: 200px;
     border: 1px solid black;
     padding: 40px;
@@ -117,9 +135,9 @@ body{
 }
 .CategoriesDiv{
     /* position:relative; */
-    display:flex;
-    justify-content: center;
-    align-items:center;
+    /* display:flex; */
+    /* justify-content: center; */
+    /* align-items:center; */
     background:transparent;
 }
 .DifficultyModal{
@@ -211,6 +229,26 @@ body{
 @tailwind components;
 @tailwind utilities;
 
+
+.categories_cover{
+    position:absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin:20px;
+    background:white;
+    margin:0px 20px 0px 20px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    transition:all 0.5s;
+}
+.categories_cover_hidden{
+    visibility: hidden;
+    opacity:0;
+}
 .shd{
 
     box-shadow: 1px 1px 4px 1px rgb(185, 182, 182);

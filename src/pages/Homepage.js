@@ -22,6 +22,8 @@ function Homepage() {
   const [errorFound, setPageError] = useState({found:false, msg:''})
   const [resumeDialogState, setResumeDialogState] = useState(false)
   const [incompQuizId, setIncompQuizId] = useState(0)
+  const [coverVisibitlity, showCover] = useState(false)
+
   const setOption = (option) => {
     console.log(option)
     if (option === diff) {
@@ -37,6 +39,7 @@ function Homepage() {
     navigate(`/Play?category=${category}&catIndex=${catIndex}&difficulty=${difficulty}`,
       { state: 1 })
   }
+
   const onLogout = () => {
     axios.defaults.headers['authorization'] = null
     localStorage.removeItem(process.env.REACT_APP_USER_TOKEN_KEY)
@@ -81,7 +84,13 @@ function Homepage() {
     navigate(`/Play?category=${category}&catIndex=${catIndex}&difficulty=${difficulty}`,
       { state: 1 })
   }
+  const setCoverState = () =>{
+    showCover(false)
+    sessionStorage.setItem('categories_cover_state', false)
+  }
   useEffect(() => {
+    const f = sessionStorage.getItem('categories_cover_state')
+    showCover(f==='false'?false:true)
     if (localStorage.getItem(process.env.REACT_APP_USER_TOKEN_KEY)) {
       const token = localStorage.getItem(process.env.REACT_APP_USER_TOKEN_KEY)
       setToken(token)
@@ -129,7 +138,7 @@ function Homepage() {
               className='w-9 h-8 rounded-full mr-2'
               onClick={() => setProfileBtnState(!profileClicked)}
             />
-
+            
             {
               profileClicked &&
               <div
@@ -157,6 +166,11 @@ function Homepage() {
               />
             })
           }
+          <div className={coverVisibitlity?'categories_cover':'categories_cover categories_cover_hidden'}>
+            <button className='play_quiz' onClick={setCoverState}>
+              Play Quiz
+            </button>  
+        </div>
         </ul>
         {
           choosingDiff && !resumeDialogState &&
