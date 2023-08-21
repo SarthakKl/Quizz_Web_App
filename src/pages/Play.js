@@ -14,8 +14,6 @@ function Play() {
   const category = searchParams.get('category')
   const catIndex = searchParams.get('catIndex')
   const difficulty = searchParams.get('difficulty')
-  // console.log(process.env.REACT_APP_USER_TOKEN_KEY)
-
   const navigate = useNavigate()
   const location = useLocation()
   const [questions, setQuestions] = useState([])
@@ -27,8 +25,6 @@ function Play() {
   const [timeRem, setTimer] = useState(0)
   const [loading, setLoading] = useState(true);
   const [finishConfirmation, setFinishState] = useState(false)
-  // const [resultDeclared, setResult] = useState(false)
-  // const [score, setScore] = useState(0)
 
   const fetchQuestions = async () =>{
     setLoading(true)
@@ -108,7 +104,7 @@ function Play() {
   },[])
 
   return (
-    <div className = "absolute top-0 left-0 right-0 bottom-0 bg-white z-10">
+    <div className = "mt-16 absolute left-0 right-0  z-50">
       {
         loading && 
         <div
@@ -126,7 +122,7 @@ function Play() {
       }
       {
         questions.length > 0 && !loading && !errorEncountered &&
-        <div>
+        <div className='bg-white m-2 h-full rounded-xl px-2 py-8'>
           <div className='play_header'>
             <span className='quiz_title'>{category}</span>
             <div className='timer px-3.5 rounded bg-red-500'>
@@ -160,32 +156,31 @@ function Play() {
             }
           </div>
           {
-          finishConfirmation &&
-          <div className = 'resume_dialog'>
-            <div className='inner_resume'>
-              <h2>Are you sure you want to finish the quiz?</h2>
-              <button 
-                className = 'resume_no'
-                onClick={()=>setFinishState(false)}
-              >
-                No
-              </button>
-              <button 
-                className = 'resume_yes'
-                onClick={onFinish}
-              >
-                Yes
-              </button>
-            </div>
-          </div>
-        }
+            finishConfirmation &&
+            <>
+              <div className = 'resume-modal-wrapper'></div>
+              <div className='resume-modal'>
+                <h2>Are you sure you want to finish the quiz?</h2>
+                <button 
+                  className = 'resume_no'
+                  onClick={()=>setFinishState(false)}
+                >
+                  No
+                </button>
+                <button 
+                  className = 'resume_yes'
+                  onClick={onFinish}
+                >
+                  Yes
+                </button>
+              </div>
+            </>
+          }
         </div>
       }
-      
     </div>
   )
 }
-
 export default Play
 
 

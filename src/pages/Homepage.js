@@ -3,12 +3,10 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Categories from '../components/Categories'
 import axios from 'axios'
-import ProfilePlaceHolder from '../assets/profile_placeholder.png'
 import { checkIncompleteQuiz, deleteIncompleteQuiz } from '../utils/api_call'
-import Logo from '../assets/Logo5.svg'
+import {motion} from 'framer-motion'
 
-
-function Homepage() {
+function Homepage({loggedIn}) {
   const navigate = useNavigate()
   const [choosingDiff, setDiff] = useState(false)
   const [category, setCategory] = useState('')
@@ -16,13 +14,9 @@ function Homepage() {
   const [diff, changeDiff] = useState(0)
   const [btnDisabled, setBtnState] = useState(true)
   const [difficulty, setDifficulty] = useState('')
-  const [token, setToken] = useState('')
-  const [notLogin, setLoginState] = useState(true)
-  const [profileClicked, setProfileBtnState] = useState(false)
   const [errorFound, setPageError] = useState({found:false, msg:''})
   const [resumeDialogState, setResumeDialogState] = useState(false)
   const [incompQuizId, setIncompQuizId] = useState(0)
-  const [coverVisibitlity, showCover] = useState(false)
 
   const setOption = (option) => {
     console.log(option)
@@ -39,14 +33,6 @@ function Homepage() {
     navigate(`/Play?category=${category}&catIndex=${catIndex}&difficulty=${difficulty}`,
       { state: 1 })
   }
-
-  const onLogout = () => {
-    axios.defaults.headers['authorization'] = null
-    localStorage.removeItem(process.env.REACT_APP_USER_TOKEN_KEY)
-    setToken('')
-    console.log(localStorage.getItem(process.env.REACT_APP_USER_TOKEN_KEY))
-    setLoginState(true)
-  }
   const incompleteQuizInfo  = async () =>{
     try {
       const check = await checkIncompleteQuiz()
@@ -55,7 +41,6 @@ function Homepage() {
         return setPageError({found:true, msg:check.error})
 
       if(check.quiz_details){
-        // console.log(quiz)
         setResumeDialogState(true)
         setCategory(check.quiz_details.category)
         setDifficulty(check.quiz_details.difficulty)
@@ -84,20 +69,18 @@ function Homepage() {
     navigate(`/Play?category=${category}&catIndex=${catIndex}&difficulty=${difficulty}`,
       { state: 1 })
   }
-  const setCoverState = () =>{
-    showCover(false)
-    sessionStorage.setItem('categories_cover_state', false)
-  }
+  const pageVariants = {
+    initial: { opacity: 0, y: '100%' },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: '-100%' },
+  };
+  
+  const pageTransition = {
+    type: 'tween',
+    ease: 'anticipate',
+    duration: 0.5,
+  };
   useEffect(() => {
-    const f = sessionStorage.getItem('categories_cover_state')
-    showCover(f==='false'?false:true)
-    if (localStorage.getItem(process.env.REACT_APP_USER_TOKEN_KEY)) {
-      const token = localStorage.getItem(process.env.REACT_APP_USER_TOKEN_KEY)
-      setToken(token)
-      console.log(token)
-      axios.defaults.headers['authorization'] = token
-      setLoginState(false)
-    }
     incompleteQuizInfo()
 
     return () => {
@@ -107,138 +90,102 @@ function Homepage() {
     }
   }, []);
   return (
-    <div>
-      <div className='header'>
-        <img 
-          src = {Logo}  width='90px'
-          className='ml-2' 
-        />
-        {
-          notLogin &&
-          <ul className="header_right mr-2">
-            <li
-              className='px-2 py-1 rounded-lg mr-0.5'
-              onClick={() => navigate('/Login')}
-            >
-              Login
-            </li>
-            <li
-              className='px-2 py-1 rounded-lg bg-sky-500 text-white'
-              onClick={() => navigate('/SignUp')}
-            >
-              Sign Up
-            </li>
-          </ul>
-        }
-        {
-          !notLogin &&
-          <div className='relative'>
-            <img
-              src={ProfilePlaceHolder}
-              className='w-9 h-8 rounded-full mr-2'
-              onClick={() => setProfileBtnState(!profileClicked)}
-            />
-            
+    <>
+      <motion.div
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={pageVariants}
+        transition={pageTransition}
+        className='main-wrapper'
+      >
+        <div className='CategoriesDiv'>
+          <ul className='Categories'>
             {
-              profileClicked &&
-              <div
-                className='absolute right-0 p-2  rounded shadow-cyan-500/50 shd'
-                onClick={onLogout}
-              >
-                Logout
-              </div>
+              quizCategories.map((category, index) => {
+                return <Categories
+                  notLogin={!loggedIn}
+                  category={category}
+                  index={index}
+                  setCatIndex={setCatIndex}
+                  setCategory={setCategory}
+                  setDiff={setDiff}
+                  key={index + 1}
+                />
+              })
             }
-          </div>
-        }
-      </div>
-      <div className='CategoriesDiv'>
-        <ul className='Categories'>
-          {
-            quizCategories.map((category, index) => {
-              return <Categories
-                notLogin={notLogin}
-                category={category}
-                index={index}
-                setCatIndex={setCatIndex}
-                setCategory={setCategory}
-                setDiff={setDiff}
-                key={index + 1}
-              />
-            })
-          }
-          <div className={coverVisibitlity?'categories_cover':'categories_cover categories_cover_hidden'}>
-            <button className='play_quiz' onClick={setCoverState}>
-              Play Quiz
-            </button>  
+          </ul>
         </div>
-        </ul>
-        {
-          choosingDiff && !resumeDialogState &&
-          <div className='outer_difficulty'>
-              <div className='DifficultyModal'>
-                <div className='text-center text-xl  difficulty_header'>Select Difficulty</div>
-                <ul className='DifficultyList'>
-                  <li
-                    onClick={() => setOption(1)}
-                    className={diff == 1 ? 'selected' : 'unselected'}
-                    unselectable='on'
-                  >
-                    Easy
-                  </li>
-                  <li
-                    onClick={() => setOption(2)}
-                    className={diff == 2 ? 'selected' : 'unselected'}
-                    unselectable='on'
-                  >
-                    Medium
-                  </li>
-                  <li
-                    onClick={() => setOption(3)}
-                    className={diff == 3 ? 'selected' : 'unselected'}
-                    unselectable='on'
-                  >
-                    Hard
-                  </li>
-                </ul>
-                <button className='CancelDiff' onClick={() => {
-                  changeDiff(0)
-                  setBtnState(true)
-                  setDiff(false)
-                }}>
-                  Cancel
-                </button>
-                <button
-                  className='select_btn'
-                  disabled={btnDisabled}
-                  onClick={handleSubmit}
-                >
-                  Select
-                </button>
-              </div>
+        
+      </motion.div>
+      {
+        resumeDialogState &&
+        <>
+          <div className = 'resume-modal-wrapper'></div>
+          <div className='resume-modal'>
+            <h2>Do you want to resume previous quiz?</h2>
+            <button 
+              className = 'resume_no'
+              onClick={onCancel}
+            >
+              No
+            </button>
+            <button 
+              className = 'resume_yes'
+              onClick={onResume}
+            >
+              Yes
+            </button>
           </div>
-        }
-        {
-          resumeDialogState &&
-          <div className = 'resume_dialog'>
-            <div className='inner_resume'>
-              <h2>Do you want to resume previous quiz?</h2>
-              <button 
-                className = 'resume_no'
-                onClick={onCancel}
+        </>
+      }
+      {
+        choosingDiff && !resumeDialogState &&
+        <>
+          <div className="difficulty-modal-wrapper"></div>
+          <div className='difficulty-modal'>
+            <div className='text-center text-xl  difficulty_header'>Select Difficulty</div>
+            <ul className='DifficultyList'>
+              <li
+                onClick={() => setOption(1)}
+                className={diff === 1 ? 'selected' : 'unselected'}
+                unselectable='on'
               >
-                No
-              </button>
-              <button 
-                className = 'resume_yes'
-                onClick={onResume}
+                Easy
+              </li>
+              <li
+                onClick={() => setOption(2)}
+                className={diff === 2 ? 'selected' : 'unselected'}
+                unselectable='on'
               >
-                Yes
-              </button>
-            </div>
+                Medium
+              </li>
+              <li
+                onClick={() => setOption(3)}
+                className={diff === 3 ? 'selected' : 'unselected'}
+                unselectable='on'
+              >
+                Hard
+              </li>
+            </ul>
+            <button className='CancelDiff' onClick={() => {
+              changeDiff(0)
+              setBtnState(true)
+              setDiff(false)
+            }}>
+              Cancel
+            </button>
+            <button
+              className='select_btn'
+              disabled={btnDisabled}
+              onClick={handleSubmit}
+            >
+              Select
+            </button>
           </div>
-        }
-      </div>
-    </div>
+        </> 
+      }
+    </>
   )
 }
 

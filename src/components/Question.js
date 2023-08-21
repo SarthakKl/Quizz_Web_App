@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import './Question.scss'
 
 function Question({ question,
   selectOption,
@@ -10,8 +11,8 @@ function Question({ question,
   const nav_options = Array(10).fill(0).map((e, i) => i + 1)
 
   function handleSelection(option) {
-    // console.log(option)
     if (optionSelected === option) {
+      selectedOptionArr[index] = null
       return selectOption(null)
     }
     selectOption(option)
@@ -20,31 +21,32 @@ function Question({ question,
   useEffect(() => {
     selectOption(selectedOptionArr[index])
   }, [index]);
+
   return (
     <div className='flex flex-row'>
       <div style={{ width: '80%', marginLeft: '7px' }} >
         <div className='question'>{index + 1}) {question.question}</div>
         <div className='options'>
           <div
-            className={optionSelected == question.option1 ? 'selected_option' : 'unselected_option'}
+            className={optionSelected === question.option1 ? 'selected_option' : 'unselected_option'}
             onClick={() => handleSelection(question.option1)}
           >
             (A) {question.option1}
           </div>
           <div
-            className={optionSelected == question.option2 ? 'selected_option' : 'unselected_option'}
+            className={optionSelected === question.option2 ? 'selected_option' : 'unselected_option'}
             onClick={() => handleSelection(question.option2)}
           >
             (B) {question.option2}
           </div>
           <div
-            className={optionSelected == question.option3 ? 'selected_option' : 'unselected_option'}
+            className={optionSelected === question.option3 ? 'selected_option' : 'unselected_option'}
             onClick={() => handleSelection(question.option3)}
           >
             (C) {question.option3}
           </div>
           <div
-            className={optionSelected == question.option4 ? 'selected_option' : 'unselected_option'}
+            className={optionSelected === question.option4 ? 'selected_option' : 'unselected_option'}
             onClick={() => handleSelection(question.option4)}
           >
             (D) {question.option4}
@@ -57,7 +59,10 @@ function Question({ question,
           {
             nav_options.map(item => <div
               onClick={() => changeQuestion(item - 1)}
-              key={item}>{item}
+              key={item}
+              className = {`navOption ${index + 1 === item ? 'curr-ques': selectedOptionArr[item - 1] !== null ? 'answered-ques':''}`}
+            > 
+              {item}
             </div>)
           }
         </div>

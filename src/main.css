@@ -1,12 +1,18 @@
-*{
-    padding:0px;
-    margin:0px
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
     font-family: "Montserrat";
     src: local("Montserrat"),
       url("./fonts/Montserrat.ttf") format("truetype");
     font-weight: normal;
+}
+@font-face {
+    font-family: "Adieu";
+    src: local("Adieu-Regular"),
+      url("./fonts/Adieu-Regular.ttf") format("truetype");
+    font-weight: bold;
 }
 @font-face {
     font-family: "Montserrat-Bold";
@@ -26,16 +32,25 @@
       url("./fonts/Montserrat-Medium.ttf") format("truetype");
     font-weight: normal;
 }
+
+*{
+    padding:0px;
+    margin:0px;
+    box-sizing: border-box;
+}
+
+:root{
+    --primary-bg:rgb(197,92,94);
+    --primary-color: #ff9100;
+}
 body{
-    /* background: #e9e7e7; */
-    /* height:100vh; */
-    /* background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    background-image: linear-gradient(180deg, rgba(32, 0, 231, 0.88) 50%, rgba(255, 255, 255, 0.88) 100%); */
-    background: #38216d;
-    padding: 0;
-    margin: 0;
+    background: var(--primary-bg);
+    height: 100vh;
+    position: relative;
+    box-sizing: border-box;
+}
+.main-wrapper{  
+    padding-top:80px;
 }
 .profile{
     width: 50px;
@@ -61,11 +76,8 @@ body{
     justify-content: space-between;
     user-select: none;
     align-items: center;
-    /* background: linear-gradient(180deg, #FFA4A4  0%, #fff  100%); */
-    /* box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25); */
     margin:0px 0px 15px 0px;
     background: white;
-    /* border-bottom: 1px solid #5e5e5e; */
     box-shadow: 1px 1px 1px 1px  rgba(255, 255, 255, 0.788);
 }
 .header_right{
@@ -75,31 +87,33 @@ body{
 .Categories{
     list-style: none;
     display: flex;
-    position:relative;
     flex-wrap: wrap;
     justify-content: center;
-    /* padding: 0px 20px 0px 20px; */
 }
 .category{
     width: 200px;
-    border: 1px solid black;
     padding: 40px;
     height:30px ;
     margin: 8px;
     background-color: #ffffff;
     font-family: "Montserrat-Bold";
-    border-radius: 8px;
     display: flex;
     user-select: none;
     text-align: center;
     justify-content: center;
     align-items: center;
-    /* color: #fff; */
     transition: all 500ms;
-
+    border:none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.1);
+}
+.category:hover{
+    background-color: rgb(206, 115, 116);
+    color:white;
+    transform: scale(1.1);
 }
 .play_quiz{
-    /* border: 1px solid gray; */
     height:50px;
     width:150px;
     border-radius:8px;
@@ -108,46 +122,14 @@ body{
     box-shadow:2px 2px 2px 2px gray
 }
 .play_quiz:hover{
-    /* border: 1px solid gray; */
     height:50px;
     width:150px;
     border-radius:8px;
     background-color: rgb(0, 160, 0);
     box-shadow:2px 2px 2px 2px gray
 }
-.category:hover{
-    width: 200px;
-    border: 1px solid black;
-    padding: 40px;
-    height:30px ;
-    margin: 8px;
-    background-color: #38216d;
-    font-family: "Montserrat-Bold";
-    border-radius: 8px;
-    display: flex;
-    user-select: none;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    cursor: pointer;
-    transform: scale(1.1);
-}
 .CategoriesDiv{
-    /* position:relative; */
-    /* display:flex; */
-    /* justify-content: center; */
-    /* align-items:center; */
     background:transparent;
-}
-.DifficultyModal{
-    background-color: white;
-    padding: 20px;
-    color:black;
-    border:1px solid gray;
-    border-radius:4px;
-    width:300px;
-    box-shadow: -1px 2px 15px 2px rgba(0, 0, 0, 0.856);
 }
 .DifficultyList{
     list-style: none;
@@ -225,38 +207,16 @@ body{
     color: black;
     padding: 5px 20px;
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-.categories_cover{
-    position:absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin:20px;
-    background:white;
-    margin:0px 20px 0px 20px;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    transition:all 0.5s;
-}
-.categories_cover_hidden{
-    visibility: hidden;
-    opacity:0;
-}
 .shd{
-
     box-shadow: 1px 1px 4px 1px rgb(185, 182, 182);
     border: 1px solid rgb(243, 242, 242);
     background: #fff;
     cursor: pointer;
+    font-family: Montserrat-Medium;
 }
-
+.shd:hover{
+    background-color: whitesmoke;
+}
 .resume_yes{
     padding: 3px;
     margin-top: 5px;
@@ -278,40 +238,54 @@ body{
     color: black;
     padding: 5px 20px;
 }
-.resume_dialog{
-    background-color: transparent;
-    color:black;
-    border:1px solid gray;
-    border-radius:4px;
+.resume-modal-wrapper{
     position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.856);
+    left: 0;right: 0;top: 0;bottom: 0;
+    opacity:0.1;
+    z-index: 10;
+    background: #000000;
 }
-.inner_resume{
-    align-items: center;
+.resume-modal{
     width:320px;
     padding: 20px;
     background-color: white;
     color:black;
+    border-radius: 10px;
+    z-index: 12;
+    min-height:130px;
     font-family: "Montserrat-SemiBold";
     border:1px solid gray;
     box-shadow: -1px 2px 15px 2px rgba(0, 0, 0, 0.856);
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
 }
 .difficulty_header{
     font-family: "Montserrat-SemiBold";
 }
-.outer_difficulty{
-    background-color: transparent;
+.difficulty-modal-wrapper{
     position:absolute;
-    left: 0;
-    right: 0;top: 0;bottom: 0;
-    display: grid;
-    align-items: center;
-    justify-content: center;
+    left: 0;right: 0;top: 0;bottom: 0;
+    opacity:0.1;
+    z-index: 10;
+    background: #000000;
+}
+.difficulty-modal{
+    background-color: white;
+    padding: 20px;
+    color:black;
+    border:1px solid gray;
+    border-radius:4px;
+    width:300px;
+    position:absolute;
+    box-shadow: -1px 2px 15px 2px rgba(0, 0, 0, 0.856);
+    height: 280px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 12;
+}
+.loginFormFont{
+    font-family: Montserrat-Medium;
 }

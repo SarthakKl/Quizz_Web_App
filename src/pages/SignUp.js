@@ -26,8 +26,8 @@ function SignUp() {
         navigate('/Login', { replace: true })
     }
     return (
-        <div className='absolute top-0 right-0 left-0 bottom-0 bg-white'>
-            <div className='bg-sky-50 w-80 m-auto mt-36 px-3 py-8  drop-shadow-xl'>
+        <div className='absolute top-0 right-0 left-0 bottom-0'>
+            <div className='bg-white w-80 m-auto mt-36 px-3 py-8 drop-shadow-xl shadow-2xl rounded-lg loginFormFont'>
                 {
                     verificationState &&
                     <div className='text-center '>Please verify you email address<br/>You can close this window</div>

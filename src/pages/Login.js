@@ -1,9 +1,9 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import {useNavigate } from 'react-router-dom'
 import { performLogin } from '../utils/api_call'
 import {useState} from 'react'
 
-function Login() {
+function Login({setLoginState}) {
     const [errorCountered, showError] = useState('')
     const [verificationState, setVerificationState] = useState(false)
     const navigate = useNavigate()
@@ -20,15 +20,17 @@ function Login() {
                 return setVerificationState(true)
             }
             // console.log(data.user)
-            navigate('/', {replace:true})
+            setLoginState(true)
+            navigate('/quiz', {replace:true})
         } 
         catch (error) {
             console.log(error)
+            return showError(error.message)
         }
     }
   return (
-    <div className='absolute top-0 right-0 left-0 bottom-0 bg-white'>
-        <div className='bg-sky-50 w-80 m-auto mt-36 px-3 py-8  drop-shadow-xl'>
+    <div className='absolute top-0 right-0 left-0 bottom-0 '>
+        <div className='bg-white w-80 m-auto mt-36 px-3 py-8  drop-shadow-xl shadow-2xl rounded-lg loginFormFont'>
             {
                 verificationState &&
                 <div className='text-center '>Please verify your email address<br/>You can close this window</div>
@@ -64,10 +66,8 @@ function Login() {
                             {errorCountered}
                     </div>
                     <div className='flex justify-center'>
-                        <span className='select-none'>Don't have an account?</span>
-                        <Link to='/SignUp'>  
-                            <span className='underline'>Sign Up</span>
-                        </Link>    
+                        <span className='select-none'>Don't have an account?</span>  
+                        <span className='underline select-none cursor-pointer' onClick={()=>navigate('/Signup', {replace:true})}>Sign Up</span>   
                     </div>
                 </div>
             }
